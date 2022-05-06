@@ -2,12 +2,59 @@ package romannumerals
 
 import "strings"
 
-type RomanNumeral struct {
-	Value int
+func ConvertToArabic(roman string) (total int) {
+	for _, symbols := range widowedRoman(roman).Symbols() {
+		total += allRomansNumerals.ValueOf(symbols...)
+	}
+
+	return
+}
+
+func ConvertToRoman(arabic int) string {
+	var result strings.Builder
+
+	for _, numeral := range allRomansNumerals {
+		for arabic >= numeral.Value {
+			result.WriteString(numeral.Symbol)
+			arabic -= numeral.Value
+		}
+	}
+
+	return result.String()
+}
+
+type romanNumeral struct {
+	Value  int
 	Symbol string
 }
 
-var allRomansNumerals = []RomanNumeral{
+type romanNumerals []romanNumeral
+
+func (r romanNumerals) ValueOf(symbols ...byte) int {
+	symbol := string(symbols)
+
+	for _, s := range r {
+		if s.Symbol == symbol {
+			return s.Value
+		}
+	}
+
+	return 0
+}
+
+func (r romanNumerals) Exists(symbols ...byte) bool {
+	symbol := string(symbols)
+
+	for _, s := range r {
+		if s.Symbol == symbol {
+			return true
+		}
+	}
+
+	return false
+}
+
+var allRomansNumerals = romanNumerals{
 	{1000, "M"},
 	{900, "CM"},
 	{500, "D"},
@@ -23,15 +70,24 @@ var allRomansNumerals = []RomanNumeral{
 	{1, "I"},
 }
 
-func ConvertToRoman(arabic int) string {
-	var result strings.Builder
+type widowedRoman string
 
-	for _, numeral := range allRomansNumerals {
-		for arabic >= numeral.Value {
-			result.WriteString(numeral.Symbol)
-			arabic -= numeral.Value
+func (w widowedRoman) Symbols() (symbols [][]byte) {
+	for i := 0; i < len(w); i += 1 {
+		symbol := w[i]
+		notAtEnd := i+1 < len(w)
+
+		if notAtEnd && isSubtractive(symbol) && allRomansNumerals.Exists(symbol, w[i+1]) {
+			symbols = append(symbols, []byte{symbol, w[i+1]})
+			i += 1
+		} else {
+			symbols = append(symbols, []byte{symbol})
 		}
 	}
 
-	return result.String()
+	return
+}
+
+func isSubtractive(currentSymbol uint8) bool {
+	return currentSymbol == 'I' || currentSymbol == 'X' || currentSymbol == 'C'
 }
