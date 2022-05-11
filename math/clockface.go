@@ -1,3 +1,5 @@
+// Package clockface provides functions that calculate the positions of the hands
+// of an analogue clock
 package clockface
 
 import (
@@ -14,38 +16,48 @@ const (
 	hoursInClock       = 2 * hoursInHalfClock
 )
 
-// A Point represents a two dimensional Cartesian coordinate
+// A Point is a Cartesian coordinate. They are used in the package
+// to represent the unit vector from the origin of a clock hand
 type Point struct {
 	X float64
 	Y float64
 }
 
-func secondsInRadians(t time.Time) float64 {
+// SecondsInRadians returns the angle of the second hand from 12 o'clock in radians
+func SecondsInRadians(t time.Time) float64 {
 	return (math.Pi / (secondsInHalfClock / (float64(t.Second()))))
 }
 
-func secondHandPoint(t time.Time) Point {
-	angle := secondsInRadians(t)
+// SecondHandPoint is the unit vector of the second hand at time `t`,
+// represented a Point
+func SecondHandPoint(t time.Time) Point {
+	angle := SecondsInRadians(t)
 
 	return angleToPoint(angle)
 }
 
-func minutesInRadians(t time.Time) float64 {
-	return (secondsInRadians(t) / minutesInClock) + (math.Pi / (30 / float64(t.Minute())))
+// MinutesInRadians returns the angle of the minute hand from 12 o'clock in radians
+func MinutesInRadians(t time.Time) float64 {
+	return (SecondsInRadians(t) / minutesInClock) + (math.Pi / (minutesInHalfClock / float64(t.Minute())))
 }
 
-func minuteHandPoint(t time.Time) Point {
-	angle := minutesInRadians(t)
+// MinuteHandPoint is the unit vector of the minute hand at time `t`,
+// represented a Point
+func MinuteHandPoint(t time.Time) Point {
+	angle := MinutesInRadians(t)
 
 	return angleToPoint(angle)
 }
 
-func hoursInRadians(t time.Time) float64 {
-	return (minutesInRadians(t) / hoursInClock) + (math.Pi / (hoursInHalfClock / float64(t.Hour()%hoursInClock)))
+// HoursInRadians returns the angle of the hour hand from 12 o'clock in radians
+func HoursInRadians(t time.Time) float64 {
+	return (MinutesInRadians(t) / hoursInClock) + (math.Pi / (hoursInHalfClock / float64(t.Hour()%hoursInClock)))
 }
 
-func hourHandPoint(t time.Time) Point {
-	angle := hoursInRadians(t)
+// HourHandPoint is the unit vector of the hour hand at time `t`,
+// represented a Point
+func HourHandPoint(t time.Time) Point {
+	angle := HoursInRadians(t)
 
 	return angleToPoint(angle)
 }
