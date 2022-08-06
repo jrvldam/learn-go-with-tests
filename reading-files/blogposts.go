@@ -1,13 +1,8 @@
 package blogposts
 
 import (
-	"io"
 	"io/fs"
 )
-
-type Post struct {
-	Title string
-}
 
 func NewPostsFromFS(fileSystem fs.FS) ([]Post, error) {
 	dir, err := fs.ReadDir(fileSystem, ".")
@@ -36,15 +31,4 @@ func getPost(filesystem fs.FS, fileName string) (Post, error) {
 	defer postFile.Close()
 
 	return newPost(postFile)
-}
-
-func newPost(postFile io.Reader) (Post, error) {
-	postData, err := io.ReadAll(postFile)
-	if err != nil {
-		return Post{}, err
-	}
-
-	post := Post{Title: string(postData)[7:]}
-
-	return post, nil
 }
