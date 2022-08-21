@@ -6,7 +6,7 @@ import (
 	"io"
 	"time"
 
-	cf "github.com/jrvldam/learn-go-with-tests/math"
+	cf "github.com/jrvldam/learn-go-with-tests/15-mathematics"
 )
 
 const (

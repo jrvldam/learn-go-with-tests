@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/jrvldam/learn-go-with-tests/math/svg"
+	"github.com/jrvldam/learn-go-with-tests/15-mathematics/svg"
 )
 
 func main() {

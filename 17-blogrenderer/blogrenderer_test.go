@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	approvals "github.com/approvals/go-approval-tests"
-	blogrenderer "github.com/jrvldam/learn-go-with-tests/blogrenderer"
+	blogrenderer "github.com/jrvldam/learn-go-with-tests/17-blogrenderer"
 )
 
 func TestRender(t *testing.T) {
@@ -19,10 +19,10 @@ func TestRender(t *testing.T) {
 		}
 	)
 
-  postRenderer, err := blogrenderer.NewPostRender()
-  if err != nil {
-    t.Fatal(err)
-  }
+	postRenderer, err := blogrenderer.NewPostRender()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	t.Run("it converts a single post into HTML", func(t *testing.T) {
 		buf := bytes.Buffer{}
@@ -34,21 +34,21 @@ func TestRender(t *testing.T) {
 		approvals.VerifyString(t, buf.String())
 	})
 
-  t.Run("it renders an index of posts", func(t *testing.T) {
-    buf := bytes.Buffer{}
-    posts := []blogrenderer.Post{{Title: "Hello World"}, {Title: "Hello World 2"}}
+	t.Run("it renders an index of posts", func(t *testing.T) {
+		buf := bytes.Buffer{}
+		posts := []blogrenderer.Post{{Title: "Hello World"}, {Title: "Hello World 2"}}
 
-    if err := postRenderer.RenderIndex(&buf, posts); err != nil {
-      t.Fatal()
-    }
+		if err := postRenderer.RenderIndex(&buf, posts); err != nil {
+			t.Fatal()
+		}
 
-    got := buf.String()
-    want := `<ol><li><a href="/post/hello-world">Hello World</a></li><li><a href="/post/hello-world-2">Hello World 2</a></li></ol>`
+		got := buf.String()
+		want := `<ol><li><a href="/post/hello-world">Hello World</a></li><li><a href="/post/hello-world-2">Hello World 2</a></li></ol>`
 
-    if got != want {
-      t.Errorf("got %q, want %q", got, want)
-    }
-  })
+		if got != want {
+			t.Errorf("got %q, want %q", got, want)
+		}
+	})
 }
 
 func BenchmarkRender(b *testing.B) {
@@ -61,10 +61,10 @@ func BenchmarkRender(b *testing.B) {
 		}
 	)
 
-  postRenderer, err := blogrenderer.NewPostRender()
-  if err != nil {
-    b.Fatal(err)
-  }
+	postRenderer, err := blogrenderer.NewPostRender()
+	if err != nil {
+		b.Fatal(err)
+	}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i += 1 {
