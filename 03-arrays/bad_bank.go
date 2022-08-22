@@ -7,16 +7,17 @@ type Transaction struct {
 }
 
 func BalanceFor(transactions []Transaction, name string) float64 {
-	var balance float64
-	for _, transaction := range transactions {
+	adjustBalance := func(currentBalance float64, transaction Transaction) float64 {
 		if transaction.From == name {
-			balance -= transaction.Sum
+			return currentBalance - transaction.Sum
 		}
 
 		if transaction.To == name {
-			balance += transaction.Sum
+			return currentBalance + transaction.Sum
 		}
+
+		return currentBalance
 	}
 
-	return balance
+	return Reduce(transactions, adjustBalance, 0.0)
 }
