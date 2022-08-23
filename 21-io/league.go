@@ -16,3 +16,15 @@ func NewLeague(rdr io.Reader) ([]Player, error) {
 
 	return league, err
 }
+
+type League []Player
+
+func (l League) Find(name string) *Player {
+	for idx, player := range l {
+		if player.Name == name {
+			return &l[idx]
+		}
+	}
+
+	return nil
+}
