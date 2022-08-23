@@ -21,3 +21,4 @@ Chapters covered:
 - blog renderer
 - generics
 - http server
+- json
