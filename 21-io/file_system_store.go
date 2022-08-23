@@ -16,3 +16,15 @@ func (f *FileSystemPlayerStore) GetLeague() []Player {
 
 	return league
 }
+
+func (f *FileSystemPlayerStore) GetPlayerScore(name string) int {
+	var score int
+	for _, player := range f.GetLeague() {
+		if player.Name == name {
+			score = player.Wins
+			return score
+		}
+	}
+
+	return score
+}
