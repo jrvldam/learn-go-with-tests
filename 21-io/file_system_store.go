@@ -1,17 +1,18 @@
 package main
 
 import (
-	"encoding/json"
 	"io"
 )
 
 type FileSystemPlayerStore struct {
-	database io.Reader
+	database io.ReadSeeker
 }
 
 func (f *FileSystemPlayerStore) GetLeague() []Player {
-	var league []Player
-	json.NewDecoder(f.database).Decode(&league)
+	// Back to the first position in order to re-read
+	f.database.Seek(0, 0)
+
+	league, _ := NewLeague(f.database)
 
 	return league
 }
