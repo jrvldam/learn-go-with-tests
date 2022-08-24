@@ -1,24 +1,20 @@
 package main
 
 import (
-	"github.com/jrvldam/learn-go-with-tests/22-command-line"
 	"log"
 	"net/http"
-	"os"
+
+	poker "github.com/jrvldam/learn-go-with-tests/22-command-line"
 )
 
 const dbFilename = "game.db.json"
 
 func main() {
-	db, err := os.OpenFile(dbFilename, os.O_RDWR|os.O_CREATE, 0666)
+	store, close, err := poker.FileSystemPlayerStoreFromFile(dbFilename)
 	if err != nil {
-		log.Fatalf("problem opening %s %v", dbFilename, err)
+		log.Fatal(err)
 	}
-
-	store, err := poker.NewFileSystemPlayerStore(db)
-	if err != nil {
-		log.Fatalf("problem creating file system player store, %v", err)
-	}
+	defer close()
 
 	server := poker.NewPlayerServer(store)
 
