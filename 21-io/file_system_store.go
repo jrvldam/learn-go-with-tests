@@ -7,10 +7,10 @@ import (
 )
 
 func NewFileSystemPlayerStore(file *os.File) (*FileSystemPlayerStore, error) {
-	err := initialisePlayerDbFile(file)
+	err := initializePlayerDbFile(file)
 
 	if err != nil {
-		return nil, fmt.Errorf("problem initialising db player db file, %v", err)
+		return nil, fmt.Errorf("problem initializing db player db file, %v", err)
 	}
 
 	league, err := NewLeague(file)
@@ -25,7 +25,7 @@ func NewFileSystemPlayerStore(file *os.File) (*FileSystemPlayerStore, error) {
 	}, nil
 }
 
-func initialisePlayerDbFile(file *os.File) error {
+func initializePlayerDbFile(file *os.File) error {
 	// Back to the first position in order to re-read
 	file.Seek(0, 0)
 

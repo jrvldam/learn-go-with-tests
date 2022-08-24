@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -44,7 +43,7 @@ func TestFileSystemStore(t *testing.T) {
 		assertScoreEquals(t, got, 33)
 	})
 
-	t.Run("store wins for exsisting players", func(t *testing.T) {
+	t.Run("store wins for existing players", func(t *testing.T) {
 		database, cleanDatabase := createTempFile(t, `
       [{"Name": "Nayra", "Wins": 10},
       {"Name": "Amaya", "Wins": 33}]
@@ -97,7 +96,7 @@ func assertScoreEquals(t testing.TB, got, want int) {
 func createTempFile(t testing.TB, initialData string) (*os.File, func()) {
 	t.Helper()
 
-	tmpFile, err := ioutil.TempFile("", "db")
+	tmpFile, err := os.CreateTemp("", "db")
 	if err != nil {
 		t.Fatalf("could not create temp file %v", err)
 	}

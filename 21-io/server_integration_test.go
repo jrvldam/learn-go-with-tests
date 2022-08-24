@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestRecodingWinsAndRetrivingThem(t *testing.T) {
+func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 	database, cleanDatabase := createTempFile(t, "[]")
 	defer cleanDatabase()
 	store, err := NewFileSystemPlayerStore(database)

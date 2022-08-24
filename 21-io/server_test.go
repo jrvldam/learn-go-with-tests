@@ -96,7 +96,7 @@ func TestStoreWins(t *testing.T) {
 		assertStatus(t, response.Code, http.StatusAccepted)
 
 		if len(store.winCalls) != 1 {
-			t.Fatalf("got %d calls to RecodWin, want %d", len(store.winCalls), 1)
+			t.Fatalf("got %d calls to RecordWin, want %d", len(store.winCalls), 1)
 		}
 
 		if store.winCalls[0] != player {
