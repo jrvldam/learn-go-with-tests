@@ -1,26 +1,26 @@
 # learn-go-with-tests
 
 Chapters covered:
-- hello world
-- integers
-- iteration
-- arrays
-- structs
-- pointers
-- maps
-- dependency injection
-- mocking
-- concurrency
-- select
-- reflection
-- sync
-- context
-- roman numerals
-- mathematics
-- reading files
-- blog renderer
-- generics
-- http server
-- json
-- io
+- [hello world](./00-hello-world/)
+- [integers](./01-integers/)
+- [iteration](./02-iteration/)
+- [arrays](./03-arrays/)
+- [structs](./04-structs/)
+- [pointers](./05-pointers/)
+- [maps](./06-maps/)
+- [dependency injection](./07-dependency-injection/)
+- [mocking](./08-mocking/)
+- [concurrency](./09-concurrency/)
+- [select](./10-select/)
+- [reflection](./11-reflection/)
+- [sync](./12-sync/)
+- [context](./13-contenx/)
+- [roman numerals](./14-roman-numerals/)
+- [mathematics](./15-mathematics/)
+- [reading files](./16-read-files/)
+- [blog renderer](./17-blogrenderer/)
+- [generics](./18-generics/)
+- [http server](./19-http-server/)
+- [json](./20-json/)
+- [io](./21-io/)
 - [command-line](./22-command-line/)
