@@ -2,6 +2,10 @@ package poker
 
 import "time"
 
+func NewGame(alerter BlindAlerter, store PlayerStore) *Game {
+	return &Game{alerter, store}
+}
+
 type Game struct {
 	alerter BlindAlerter
 	store   PlayerStore
