@@ -2,37 +2,51 @@ package poker_test
 
 import (
 	"bytes"
-	"fmt"
 	"strings"
 	"testing"
-	"time"
 
 	poker "github.com/jrvldam/learn-go-with-tests/23-time"
 )
 
-var dummyBlindAlerter = &SpyBlindAlerter{}
+var dummyBlindAlerter = &poker.SpyBlindAlerter{}
 var dummyPlayerStore = &poker.StubPlayerStore{}
 var dummyStdIn = &bytes.Buffer{}
 var dummyStdOut = &bytes.Buffer{}
 
-type scheduleAlert struct {
-	at     time.Duration
-	amount int
+type GameSpy struct {
+	StartCalledWith  int
+	FinishCalledWith string
 }
 
-func (s scheduleAlert) String() string {
-	return fmt.Sprintf("%d chips at %v", s.amount, s.at)
+func (g *GameSpy) Start(numberOfPlayers int) {
+	g.StartCalledWith = numberOfPlayers
 }
 
-type SpyBlindAlerter struct {
-	alerts []scheduleAlert
-}
-
-func (s *SpyBlindAlerter) ScheduleAlertAt(at time.Duration, amount int) {
-	s.alerts = append(s.alerts, scheduleAlert{at, amount})
+func (g *GameSpy) Finish(winner string) {
+	g.FinishCalledWith = winner
 }
 
 func TestCLI(t *testing.T) {
+	t.Run("it prompts the user to enter the number of players and starts the game", func(t *testing.T) {
+		stdout := &bytes.Buffer{}
+		stdin := strings.NewReader("7\n")
+		game := &GameSpy{}
+
+		cli := poker.NewCLI(stdin, stdout, game)
+		cli.PlayPoker()
+
+		gotPrompt := stdout.String()
+		wantPrompt := poker.PlayerPrompt
+
+		if gotPrompt != wantPrompt {
+			t.Errorf("got %q, want %q", gotPrompt, wantPrompt)
+		}
+
+		if game.StartCalledWith != 7 {
+			t.Errorf("wantend Start called with 7 but got %d", game.StartCalledWith)
+		}
+	})
+
 	t.Run("record amaya win from user input", func(t *testing.T) {
 		in := strings.NewReader("1\nAmaya wins\n")
 		playerStore := &poker.StubPlayerStore{}

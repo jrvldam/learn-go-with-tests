@@ -8,7 +8,12 @@ import (
 	"strings"
 )
 
-func NewCLI(in io.Reader, out io.Writer, game *Game) *CLI {
+type Game interface {
+	Start(numberOfPlayers int)
+	Finish(winner string)
+}
+
+func NewCLI(in io.Reader, out io.Writer, game Game) *CLI {
 	return &CLI{
 		in:   bufio.NewScanner(in),
 		out:  out,
@@ -19,7 +24,7 @@ func NewCLI(in io.Reader, out io.Writer, game *Game) *CLI {
 type CLI struct {
 	in   *bufio.Scanner
 	out  io.Writer
-	game *Game
+	game Game
 }
 
 const PlayerPrompt = "Please enter the number of players: "

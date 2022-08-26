@@ -12,12 +12,12 @@ import (
 
 func TestGame_Start(t *testing.T) {
 	t.Run("schedules alerts on game start for 5 players", func(t *testing.T) {
-		blindAlerter := &SpyBlindAlerter{}
+		blindAlerter := &poker.SpyBlindAlerter{}
 		game := poker.NewGame(blindAlerter, dummyPlayerStore)
 
 		game.Start(5)
 
-		cases := []scheduleAlert{
+		cases := []poker.ScheduleAlert{
 			{0 * time.Second, 100},
 			{10 * time.Minute, 200},
 			{20 * time.Minute, 300},
@@ -37,7 +37,7 @@ func TestGame_Start(t *testing.T) {
 	t.Run("it prompts the user to enter the number of players", func(t *testing.T) {
 		stdout := &bytes.Buffer{}
 		stdin := strings.NewReader("7\n")
-		blindAlerter := &SpyBlindAlerter{}
+		blindAlerter := &poker.SpyBlindAlerter{}
 		game := poker.NewGame(blindAlerter, dummyPlayerStore)
 
 		cli := poker.NewCLI(stdin, stdout, game)
@@ -50,7 +50,7 @@ func TestGame_Start(t *testing.T) {
 			t.Errorf("got %q, want %q", got, want)
 		}
 
-		cases := []scheduleAlert{
+		cases := []poker.ScheduleAlert{
 			{0 * time.Second, 100},
 			{12 * time.Minute, 200},
 			{24 * time.Minute, 300},
@@ -71,28 +71,28 @@ func TestGame_Finish(t *testing.T) {
 	poker.AssertPlayerWin(t, store, winner)
 }
 
-func checkSchedulingCases(t *testing.T, cases []scheduleAlert, blindAlerter *SpyBlindAlerter) {
+func checkSchedulingCases(t *testing.T, cases []poker.ScheduleAlert, blindAlerter *poker.SpyBlindAlerter) {
 	for i, want := range cases {
-		t.Run(fmt.Sprintf("%d scheduled for %v", want.amount, want.at), func(t *testing.T) {
-			if len(blindAlerter.alerts) <= i {
-				t.Fatalf("alert %d was not scheduled %v", i, blindAlerter.alerts)
+		t.Run(fmt.Sprintf("%d scheduled for %v", want.Amount, want.At), func(t *testing.T) {
+			if len(blindAlerter.Alerts) <= i {
+				t.Fatalf("alert %d was not scheduled %v", i, blindAlerter.Alerts)
 			}
 
-			got := blindAlerter.alerts[i]
+			got := blindAlerter.Alerts[i]
 			assertScheduleAlert(t, got, want)
 		})
 	}
 }
 
-func assertScheduleAlert(t testing.TB, got scheduleAlert, want scheduleAlert) {
+func assertScheduleAlert(t testing.TB, got poker.ScheduleAlert, want poker.ScheduleAlert) {
 	t.Helper()
-	amountGot := got.amount
-	if amountGot != want.amount {
-		t.Fatalf("got amount %d, want %d", amountGot, want.at)
+	amountGot := got.Amount
+	if amountGot != want.Amount {
+		t.Fatalf("got amount %d, want %d", amountGot, want.At)
 	}
 
-	gotScheduledTime := got.at
-	if gotScheduledTime != want.at {
-		t.Errorf("got scheduled time of %v, want %v", gotScheduledTime, want.at)
+	gotScheduledTime := got.At
+	if gotScheduledTime != want.At {
+		t.Errorf("got scheduled time of %v, want %v", gotScheduledTime, want.At)
 	}
 }
