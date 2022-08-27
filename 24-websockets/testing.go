@@ -61,8 +61,10 @@ func assertLeague(t testing.TB, got, want []Player) {
 	}
 }
 
-func assertStatus(t testing.TB, got, want int) {
+func assertStatus(t testing.TB, response *httptest.ResponseRecorder, want int) {
 	t.Helper()
+
+	got := response.Code
 	if got != want {
 		t.Errorf("did not get correct status, got %d want %d", got, want)
 	}
@@ -82,6 +84,12 @@ func newGetScoreRequest(name string) *http.Request {
 
 func newPostWinRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/players/%s", name), nil)
+
+	return req
+}
+
+func newGameRequest() *http.Request {
+	req, _ := http.NewRequest(http.MethodGet, "/game", nil)
 
 	return req
 }
