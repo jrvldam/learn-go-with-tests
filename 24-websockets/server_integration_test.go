@@ -13,8 +13,11 @@ func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 
 	assertNoError(t, err)
 
-	server := NewPlayerServer(store)
 	player := "Pepper"
+	server, err := NewPlayerServer(store)
+	if err != nil {
+		t.Fatal("must create a new player server", err)
+	}
 
 	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(player))
 	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(player))
