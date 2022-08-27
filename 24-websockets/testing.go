@@ -126,6 +126,6 @@ type SpyBlindAlerter struct {
 	Alerts []ScheduleAlert
 }
 
-func (s *SpyBlindAlerter) ScheduleAlertAt(at time.Duration, amount int) {
+func (s *SpyBlindAlerter) ScheduleAlertAt(at time.Duration, amount int, to io.Writer) {
 	s.Alerts = append(s.Alerts, ScheduleAlert{at, amount})
 }

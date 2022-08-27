@@ -15,15 +15,19 @@ var dummyStdIn = &bytes.Buffer{}
 var dummyStdOut = &bytes.Buffer{}
 
 type SpyGame struct {
-	StartCalledWith  int
-	StartCalled      bool
+	StartCalledWith int
+	StartCalled     bool
+
+	BlindAlert []byte
+
 	FinishCalledWith string
 	FinishCalled     bool
 }
 
-func (g *SpyGame) Start(numberOfPlayers int) {
+func (g *SpyGame) Start(numberOfPlayers int, out io.Writer) {
 	g.StartCalledWith = numberOfPlayers
 	g.StartCalled = true
+	out.Write(g.BlindAlert)
 }
 
 func (g *SpyGame) Finish(winner string) {
