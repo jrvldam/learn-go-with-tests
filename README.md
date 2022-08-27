@@ -24,3 +24,4 @@ Chapters covered:
 - [json](./20-json/)
 - [io](./21-io/)
 - [command-line](./22-command-line/)
+- [time](./23-time)
