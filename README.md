@@ -25,3 +25,4 @@ Chapters covered:
 - [io](./21-io/)
 - [command-line](./22-command-line/)
 - [time](./23-time)
+- [websokets](./24-websockets/)
