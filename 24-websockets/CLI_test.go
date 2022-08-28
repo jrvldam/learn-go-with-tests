@@ -14,34 +14,13 @@ var dummyPlayerStore = &poker.StubPlayerStore{}
 var dummyStdIn = &bytes.Buffer{}
 var dummyStdOut = &bytes.Buffer{}
 
-type SpyGame struct {
-	StartCalledWith int
-	StartCalled     bool
-
-	BlindAlert []byte
-
-	FinishCalledWith string
-	FinishCalled     bool
-}
-
-func (g *SpyGame) Start(numberOfPlayers int, out io.Writer) {
-	g.StartCalledWith = numberOfPlayers
-	g.StartCalled = true
-	out.Write(g.BlindAlert)
-}
-
-func (g *SpyGame) Finish(winner string) {
-	g.FinishCalledWith = winner
-	g.FinishCalled = true
-}
-
 func userSends(messages ...string) io.Reader {
 	return strings.NewReader(strings.Join(messages, "\n"))
 }
 
 func TestCLI(t *testing.T) {
 	t.Run("start game with 3 players and finish game with 'Nayra' as winner", func(t *testing.T) {
-		game := &SpyGame{}
+		game := &poker.SpyGame{}
 		stdout := &bytes.Buffer{}
 
 		stdin := userSends("3", "Nayra wins")
@@ -55,7 +34,7 @@ func TestCLI(t *testing.T) {
 	})
 
 	t.Run("start game with 8 players and record 'Julia' as winner", func(t *testing.T) {
-		game := &SpyGame{}
+		game := &poker.SpyGame{}
 
 		stdin := userSends("8", "Julia wins")
 		cli := poker.NewCLI(stdin, dummyStdOut, game)
@@ -69,7 +48,7 @@ func TestCLI(t *testing.T) {
 	t.Run("it prints an error when a non numeric value is entered and does not start the game", func(t *testing.T) {
 		stdout := &bytes.Buffer{}
 		stdin := strings.NewReader("Rodrigo\n")
-		game := &SpyGame{}
+		game := &poker.SpyGame{}
 
 		cli := poker.NewCLI(stdin, stdout, game)
 		cli.PlayPoker()
@@ -87,7 +66,7 @@ func TestCLI(t *testing.T) {
 	})
 
 	t.Run("it prints an error when the winner is declared incorrectly", func(t *testing.T) {
-		game := &SpyGame{}
+		game := &poker.SpyGame{}
 		stdout := &bytes.Buffer{}
 
 		stdin := userSends("1", "Rodrigo is a killer")
@@ -132,7 +111,7 @@ func assertMessagesSentToUser(t testing.TB, stdout *bytes.Buffer, messages ...st
 	}
 }
 
-func assertGameStartedWith(t testing.TB, game *SpyGame, want int) {
+func assertGameStartedWith(t testing.TB, game *poker.SpyGame, want int) {
 	t.Helper()
 
 	got := game.StartCalledWith
@@ -142,7 +121,7 @@ func assertGameStartedWith(t testing.TB, game *SpyGame, want int) {
 	}
 }
 
-func assertFinishCalledWith(t testing.TB, game *SpyGame, want string) {
+func assertFinishCalledWith(t testing.TB, game *poker.SpyGame, want string) {
 	t.Helper()
 
 	got := game.FinishCalledWith
@@ -152,7 +131,7 @@ func assertFinishCalledWith(t testing.TB, game *SpyGame, want string) {
 	}
 }
 
-func assertGameNotFinished(t testing.TB, game *SpyGame) {
+func assertGameNotFinished(t testing.TB, game *poker.SpyGame) {
 	t.Helper()
 	if game.FinishCalled {
 		t.Errorf("finish should not to be called")

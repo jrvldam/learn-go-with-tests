@@ -29,6 +29,27 @@ func (s *StubPlayerStore) GetLeague() League {
 	return s.league
 }
 
+type SpyGame struct {
+	StartCalledWith int
+	StartCalled     bool
+
+	BlindAlert []byte
+
+	FinishCalledWith string
+	FinishCalled     bool
+}
+
+func (g *SpyGame) Start(numberOfPlayers int, out io.Writer) {
+	g.StartCalledWith = numberOfPlayers
+	g.StartCalled = true
+	out.Write(g.BlindAlert)
+}
+
+func (g *SpyGame) Finish(winner string) {
+	g.FinishCalledWith = winner
+	g.FinishCalled = true
+}
+
 func assertContentType(t testing.TB, response *httptest.ResponseRecorder, want string) {
 	t.Helper()
 	if response.Result().Header.Get("content-type") != want {

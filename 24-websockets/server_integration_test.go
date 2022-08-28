@@ -14,7 +14,7 @@ func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 	assertNoError(t, err)
 
 	player := "Pepper"
-	server, err := NewPlayerServer(store)
+	server, err := NewPlayerServer(store, nil)
 	if err != nil {
 		t.Fatal("must create a new player server", err)
 	}
