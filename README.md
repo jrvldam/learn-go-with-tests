@@ -28,3 +28,4 @@ Chapters covered:
 - [websokets](./24-websockets/)
 - [os-exec](./25-os-exec)
 - [error-types](./26-error-types)
+- [context-aware-reader](./27-context-aware-reader)
