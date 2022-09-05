@@ -26,3 +26,5 @@ Chapters covered:
 - [command-line](./22-command-line/)
 - [time](./23-time)
 - [websokets](./24-websockets/)
+- [os-exec](./25-os-exec)
+- [error-types](./26-error-types)
